@@ -1,9 +1,36 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import defaultImage from './images/File_No_image_available.png'
+import BookshelfChanger from './BookshelfChanger'
 
 class Book extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired
+  }
+
+  checkAuthors(book) {
+    if ('authors' in book)
+    return (
+      book.authors.map((author, index) => (
+        <div key={index} className="book-authors">{author}</div>
+      ))
+    )
+    else
+      return (
+        <div className="book-authors">Unknown</div>
+      )
+  }
+
+  //book.imagelinks.thumbnail
+  checkThumbnail(book) {
+    if ('imageLinks' in book)
+      return (
+        book.imageLinks.thumbnail
+      )
+    else
+      return (
+        defaultImage
+      )
   }
 
   render() {
@@ -13,21 +40,13 @@ class Book extends Component {
           <li key={book.id}>
             <div className="book">
               <div className="book-top">
-                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                <div className="book-shelf-changer">
-                  <select>
-                    <option value="move" disabled>Move to...</option>
-                    <option value="currentlyReading">Currently Reading</option>
-                    <option value="wantToRead">Want to Read</option>
-                    <option value="read">Read</option>
-                    <option value="none">None</option>
-                  </select>
-                </div>
+                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.checkThumbnail(book)})` }}></div>
+                <BookshelfChanger 
+                  book={book}
+                  className="book-shelf-changer" />
               </div>
               <div className="book-title">{book.title}</div>
-              {book.authors.map((author, index) => (
-                <div key={index} className="book-authors">{author}</div>
-              ))}
+              {this.checkAuthors(book)}
             </div>
           </li>
         ))}

@@ -13,28 +13,15 @@ class Search extends Component {
 
     updateQuery = (query) => {
         this.setState(() => ({
-            query: query.trim()
+            query: query
         }), () => this.finder(query))
-
-/*         BooksAPI.search(query)
-        .then((data) => {
-          this.setState(function(currentState, props) {
-            if (typeof data === 'undefined') {
-                console.log("UNDEFINED")
-                return { results: [] }
-            } else {
-                console.log(data)
-                return { results: data }
-            } 
-        })
-    }) */
     }
 
     finder=(query)=>{
         BooksAPI.search(query)
         .then((responses)=>{
           console.log("responses",responses)
-          if(typeof responses !== 'undefined' || responses.error !== 'empty query' ){
+          if(typeof responses !== 'undefined' && responses.error !== 'empty query' ){
             this.setState(()=>({
               results:[...responses]
             }))
@@ -47,10 +34,6 @@ class Search extends Component {
           }
         })
       }
-
-    componentDidMount() {
-
-    }
 
     render() {
         return(
