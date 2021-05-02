@@ -11,15 +11,6 @@ class BookshelfChanger extends Component {
         shelf: this.props.book.shelf
     }
 
-    checkIfPropsExist() {
-        if (typeof this.props.updateMethod === 'undefined') {
-            //updateMethod does not exist do nothing
-        }
-        else {
-            return this.props.updateMethod()
-        }
-    }
-
     checkIfShelfExists(shelf) {
         console.log(shelf)
         switch(shelf) {
@@ -52,7 +43,7 @@ class BookshelfChanger extends Component {
             .then((results) => {
                 this.setState(() => ({
                     shelf: this.getShelf(option)
-                }), this.checkIfPropsExist())
+                }), this.props.updateMethod())
             })
     }
 
