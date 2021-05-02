@@ -10,18 +10,17 @@ class Book extends Component {
 
   checkAuthors(book) {
     if ('authors' in book)
-    return (
-      book.authors.map((author, index) => (
-        <div key={index} className="book-authors">{author}</div>
-      ))
-    )
+      return (
+        book.authors.map((author, index) => (
+          <div key={index} className="book-authors">{author}</div>
+        ))
+      )
     else
       return (
         <div className="book-authors">Unknown</div>
       )
   }
 
-  //book.imagelinks.thumbnail
   checkThumbnail(book) {
     if ('imageLinks' in book)
       return (
@@ -41,9 +40,9 @@ class Book extends Component {
             <div className="book">
               <div className="book-top">
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.checkThumbnail(book)})` }}></div>
-                <BookshelfChanger 
+                <BookshelfChanger
                   book={book}
-                  className="book-shelf-changer" />
+                  updateMethod={this.props.updateMethod} />
               </div>
               <div className="book-title">{book.title}</div>
               {this.checkAuthors(book)}

@@ -1,25 +1,73 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import * as BooksAPI from './BooksAPI'
 
 class BookshelfChanger extends Component {
     static propTypes = {
         book: PropTypes.object.isRequired
-      }
+    }
 
-      updateOption = (option) =>{
+    state = {
+        shelf: this.props.book.shelf
+    }
 
-      }
+    checkIfPropsExist() {
+        if (typeof this.props.updateMethod === 'undefined') {
+            //updateMethod does not exist do nothing
+        }
+        else {
+            return this.props.updateMethod()
+        }
+    }
+
+    checkIfShelfExists(shelf) {
+        console.log(shelf)
+        switch(shelf) {
+            case('currentlyReading'):
+            return 'Currently Reading'
+            case('wantToRead'):
+            return 'Want to Read'
+            case('read'):
+            return 'Read'
+            default:
+                return 'None'
+        }
+    }
+
+    getShelf(shelf) {
+        switch(shelf) {
+            case('Currently Reading'):
+            return 'currentlyReading'
+            case('Want to Read'):
+            return 'wantToRead'
+            case('Read'):
+            return 'read'
+            default:
+                return 'none'
+        } 
+    }
+
+    updateBook = (option) => {
+        BooksAPI.update(this.props.book, this.getShelf(option))
+            .then((results) => {
+                this.setState(() => ({
+                    shelf: this.getShelf(option)
+                }), this.checkIfPropsExist())
+            })
+    }
 
     render() {
         return (
-            <select onChange={(event) => this.updateOption(event.target.value)}>
-            <option value="move" disabled>Move to...</option>
-            <option value="currentlyReading">Currently Reading</option>
-            <option value="wantToRead">Want to Read</option>
-            <option value="read">Read</option>
-            <option value="none">None</option>
-          </select>
-    )
+            <div className="book-shelf-changer">
+                <select value={this.checkIfShelfExists(this.state.shelf)} onChange={(event) => this.updateBook(event.target.value)}>
+                    <option disabled>Move to...</option>
+                    <option>Currently Reading</option>
+                    <option>Want to Read</option>
+                    <option>Read</option>
+                    <option>None</option>
+                </select>
+            </div>
+        )
     }
 }
 

@@ -13,46 +13,55 @@ class BooksApp extends React.Component {
     futureBooks: []
   }
 
-  componentDidMount() {
+  /**
+   * Returns the list of books on the users bookshelves
+   */
+  getAllBooks() {
     BooksAPI.getAll()
       .then((books) => {
-        this.setState(() => ({ 
-           readBooks: books.filter(book => book.shelf === 'read'),
-           currentBooks: books.filter(book => book.shelf === 'currentlyReading'),
-           futureBooks: books.filter(book => book.shelf === 'wantToRead')
+        this.setState(() => ({
+          readBooks: books.filter(book => book.shelf === 'read'),
+          currentBooks: books.filter(book => book.shelf === 'currentlyReading'),
+          futureBooks: books.filter(book => book.shelf === 'wantToRead')
         }))
       })
   }
 
+  componentDidMount() {
+    this.getAllBooks()
+  }
 
   render() {
+    console.log(this.state.readBooks)
     return (
       <div className="app">
         <Search />
         <Route exact path='/' render={() => (
           <div className="list-books">
-          <div className="list-books-title">
-            <h1>MyReads</h1>
-          </div>
-          <div className="list-books-content">
-            <div>
-              <Bookshelf
-                shelfTitle="Currently Reading" 
-                books={this.state.currentBooks} />
-              <Bookshelf 
-                shelfTitle="Want to Read"
-                books={this.state.futureBooks} />
-              <Bookshelf
-                shelfTitle="Read"
-                books={this.state.readBooks} />
+            <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>
+            <div className="list-books-content">
+              <div>
+                <Bookshelf
+                  shelfTitle="Currently Reading"
+                  books={this.state.currentBooks}
+                  updateMethod={this.getAllBooks.bind(this)} />
+                <Bookshelf
+                  shelfTitle="Want to Read"
+                  books={this.state.futureBooks}
+                  updateMethod={this.getAllBooks.bind(this)} />
+                <Bookshelf
+                  shelfTitle="Read"
+                  books={this.state.readBooks}
+                  updateMethod={this.getAllBooks.bind(this)} />
+              </div>
+            </div>
+            <div className="open-search">
+              <Link to={{ pathname: "/search"}}>Add a Book</Link>
             </div>
           </div>
-          <div className="open-search">
-            <Link
-              to="/search">Add a Book</Link>
-          </div>
-        </div>
-        )}/>
+        )} />
       </div>
     )
   }
