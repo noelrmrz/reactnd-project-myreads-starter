@@ -4,7 +4,7 @@ import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 
 class Search extends Component {
-
+    // update books here witht the list passed in
     state = {
         query: '',
         results: []
@@ -20,6 +20,14 @@ class Search extends Component {
         BooksAPI.search(query)
             .then((responses) => {
                 if (typeof responses !== 'undefined' && responses.error !== 'empty query') {
+
+                    // we have to check if each book is currently in a shelf since the search
+                    // results default to none. If it exists we add the shelf key and respective
+                    // value
+                    responses.forEach(book => {
+                        this.checkIfInShelf(book)
+                    });
+
                     this.setState(() => ({
                         results: [...responses]
                     }))
@@ -33,7 +41,37 @@ class Search extends Component {
             })
     }
 
+    checkIfInShelf(searchBook) {
+        this.props.books.readBooks.forEach(readBook => {
+            if (readBook.id === searchBook.id) {
+                BooksAPI.update(searchBook, 'read')
+                searchBook.shelf = 'read'
+                return searchBook
+            }
+        })
+
+        this.props.books.currentBooks.forEach(currentBook => {
+            if (currentBook.id === searchBook.id) {
+                BooksAPI.update(searchBook, 'currentlyReading')
+                searchBook.shelf = 'currentlyReading'
+                return searchBook
+            }
+        })
+
+        this.props.books.futureBooks.forEach(futureBook => {
+            if (futureBook.id === searchBook.id) {
+                BooksAPI.update(searchBook, 'wantToRead')
+                searchBook.shelf = 'wantToRead'
+                return searchBook
+            }
+        })
+
+        return searchBook
+    }
+
     render() {
+
+
         return (
             <div className="search-books">
                 <div className="search-books-bar">

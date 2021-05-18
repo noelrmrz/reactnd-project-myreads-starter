@@ -42,7 +42,7 @@ class Book extends Component {
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.checkThumbnail(book)})` }}></div>
                 <BookshelfChanger
                   book={book}
-                  updateMethod={this.props.updateMethod} />
+                  updateMethod={this.props.updateMethod} booksInShelf={this.props.booksInShelf ? this.props.booksInShelf : null} />
               </div>
               <div className="book-title">{book.title}</div>
               {this.checkAuthors(book)}

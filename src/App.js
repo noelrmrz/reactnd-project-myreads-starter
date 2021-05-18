@@ -24,11 +24,21 @@ class BooksApp extends React.Component {
           currentBooks: books.filter(book => book.shelf === 'currentlyReading'),
           futureBooks: books.filter(book => book.shelf === 'wantToRead')
         }))
-      })
+        books.forEach(book => {
+          //console.log(book)
+          //BooksAPI.update(book, book.shelf)
+        })})
+/*       .then((books) => {
+        books.forEach(book => {
+          console.log(book.shelf)
+          BooksAPI.update(book, book.shelf)
+        })
+      }) */
   }
 
   componentDidMount() {
     this.getAllBooks()
+    //this.updateInitialBookshelf()
   }
 
   render() {
@@ -36,7 +46,7 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route path='/search' render={() => (
           <Search
-            books={this.state.currentBooks}
+            books={this.state}
             updateMethod={this.getAllBooks.bind(this)} />
         )} />
 
@@ -62,7 +72,7 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="open-search">
-              <Link to={{ pathname: "/search"}}>Add a Book</Link>
+              <Link to={{ pathname: "/search" }}>Add a Book</Link>
             </div>
           </div>
         )} />

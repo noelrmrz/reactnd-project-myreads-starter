@@ -12,7 +12,6 @@ class BookshelfChanger extends Component {
     }
 
     checkIfShelfExists(shelf) {
-        console.log(shelf)
         switch(shelf) {
             case('currentlyReading'):
             return 'Currently Reading'
