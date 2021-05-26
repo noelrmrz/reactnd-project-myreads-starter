@@ -7,7 +7,7 @@ This is my finalized version of Udacity's React Fundamentals course first projec
 install all project dependencies with
 ```bash
 npm install
-'''
+```
 start the development server with 
 ```bash
 npm start
